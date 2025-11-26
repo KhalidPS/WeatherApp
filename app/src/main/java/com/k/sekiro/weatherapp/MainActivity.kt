@@ -74,7 +74,8 @@ class MainActivity : ComponentActivity() {
                                     cityName = state.value.cityName,
                                     onPlaceClicked = { lat , long , name->
                                         viewModel.getWeatherByPlace(lat,long,name)
-                                    }
+                                    },
+
                                 )
                             }
 

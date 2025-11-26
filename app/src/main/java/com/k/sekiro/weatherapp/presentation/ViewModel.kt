@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.k.sekiro.weatherapp.domain.WeatherDataSource
 import com.k.sekiro.weatherapp.domain.location.LocationTracker
+import com.k.sekiro.weatherapp.domain.util.NetworkError
 import com.k.sekiro.weatherapp.domain.util.onError
 import com.k.sekiro.weatherapp.domain.util.onSuccess
 import kotlinx.coroutines.Dispatchers
@@ -119,7 +120,13 @@ class ViewModel(
                             )
                         }
 
+
+
                         _event.send(UiEvent.ShowToast(error.name))
+
+                        if (error == NetworkError.UNKNOWN){
+                            getWeatherInfo()
+                        }
                     }
             }
         }
