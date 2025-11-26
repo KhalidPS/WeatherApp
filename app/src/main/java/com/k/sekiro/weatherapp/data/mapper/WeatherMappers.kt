@@ -2,10 +2,10 @@ package com.k.sekiro.weatherapp.data.mapper
 
 import com.k.sekiro.weatherapp.data.remote.WeatherDataDto
 import com.k.sekiro.weatherapp.data.remote.WeatherDto
-import com.k.sekiro.weatherapp.domain.WeatherData
-import com.k.sekiro.weatherapp.domain.WeatherInfo
-import com.k.sekiro.weatherapp.domain.WeatherType
-import com.k.sekiro.weatherapp.domain.TempData
+import com.k.sekiro.weatherapp.domain.weather.WeatherData
+import com.k.sekiro.weatherapp.domain.weather.WeatherInfo
+import com.k.sekiro.weatherapp.domain.weather.WeatherType
+import com.k.sekiro.weatherapp.domain.weather.TempData
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt

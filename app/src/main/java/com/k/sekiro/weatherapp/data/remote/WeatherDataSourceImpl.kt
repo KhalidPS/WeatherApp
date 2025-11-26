@@ -3,35 +3,19 @@ package com.k.sekiro.weatherapp.data.remote
 import android.content.Context
 import android.location.Geocoder
 import android.os.Build
-import android.util.Log
 import android.location.Address
-import androidx.compose.ui.geometry.Rect
-import com.k.sekiro.weatherapp.BuildConfig
 import com.k.sekiro.weatherapp.data.mapper.toWeatherInfo
 import com.k.sekiro.weatherapp.data.util.safeCall
-import com.k.sekiro.weatherapp.domain.WeatherDataSource
-import com.k.sekiro.weatherapp.domain.WeatherInfo
-import com.k.sekiro.weatherapp.domain.location.PlaceSuggestion
-import com.k.sekiro.weatherapp.domain.util.EmptyResult
+import com.k.sekiro.weatherapp.domain.weather.WeatherDataSource
+import com.k.sekiro.weatherapp.domain.weather.WeatherInfo
 import com.k.sekiro.weatherapp.domain.util.NetworkError
 import com.k.sekiro.weatherapp.domain.util.Result
 import com.k.sekiro.weatherapp.domain.util.map
-import com.k.sekiro.weatherapp.domain.util.onError
-import com.k.sekiro.weatherapp.domain.util.onSuccess
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.http.parametersOf
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
-import org.koin.core.parameter.parametersOf
 import java.util.Locale
-import kotlin.coroutines.coroutineContext
-import kotlin.math.log
 
 
 class WeatherDataSourceImpl(
@@ -100,14 +84,6 @@ class WeatherDataSourceImpl(
                 // Handle network or I/O errors
             }
 
-    }
-
-    override suspend fun getPlaceSuggestion(query: String): Result<PlaceSuggestion, NetworkError> {
-        val url = "https://api.geoapify.com/v1/geocode/autocomplete?text=$query&apiKey=${BuildConfig.GEOAPIFY_API_KEY}"
-        coroutineContext.ensureActive()
-        return safeCall {
-            httpClient.get(url)
-        }
     }
 
 

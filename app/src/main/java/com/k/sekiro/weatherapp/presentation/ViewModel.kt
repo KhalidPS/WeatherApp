@@ -3,17 +3,17 @@ package com.k.sekiro.weatherapp.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.k.sekiro.weatherapp.domain.WeatherDataSource
+import com.k.sekiro.weatherapp.domain.weather.WeatherDataSource
 import com.k.sekiro.weatherapp.domain.location.LocationTracker
+import com.k.sekiro.weatherapp.domain.network.NetworkObserver
+import com.k.sekiro.weatherapp.domain.util.NetworkError
 import com.k.sekiro.weatherapp.domain.util.onError
 import com.k.sekiro.weatherapp.domain.util.onSuccess
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -23,11 +23,15 @@ import kotlinx.coroutines.withContext
 
 class ViewModel(
     private val weatherDataSource: WeatherDataSource,
-    private val locationTracker: LocationTracker
+    private val locationTracker: LocationTracker,
+    private val networkObserver: NetworkObserver
 ) : ViewModel() {
 
+    init {
+      checkNetwork()
+    }
+
     private val _state = MutableStateFlow(UIState())
-    private var  job: Job? = null
     val state = _state
         .onStart {
             getWeatherInfo()
@@ -84,7 +88,7 @@ class ViewModel(
                                 )
                             }
 
-                            _event.send(UiEvent.ShowToast(error.name))
+                            _event.send(UiEvent.ShowToast("${error.name} error"))
                         }
 
                 }
@@ -123,29 +127,31 @@ class ViewModel(
                             )
                         }
 
-                        _event.send(UiEvent.ShowToast(error.name))
-                        getWeatherInfo()
+
+
+                        _event.send(UiEvent.ShowToast(error.name + " error"))
+
+                        if (error == NetworkError.UNKNOWN){
+                            getWeatherInfo()
+                        }
                     }
             }
         }
     }
 
-    fun getPlacesSuggestions(query: String) {
-        job?.cancel()
+    fun checkNetwork(){
         viewModelScope.launch {
-            if (job != null) delay(500)
-            job = launch(Dispatchers.IO) {
-                weatherDataSource.getPlaceSuggestion(query)
-                    .onSuccess { places ->
-                        Log.e("ks",places.features.toString())
-                        _state.update {
-                            it.copy(
-                                suggestionPlaces = places.features)
-                        }
-                    }
+            networkObserver.isConnected.collectLatest {
+                Log.e("ks","internet status $it")
+
+                if (!it){
+                    _state.update { it.copy(isLoading = true) }
+                    _event.send(UiEvent.ShowToast("Internet Disconnected"))
+                }else{
+                    _event.send(UiEvent.ShowToast("Internet Connected"))
+                }
             }
         }
-
     }
 }
 

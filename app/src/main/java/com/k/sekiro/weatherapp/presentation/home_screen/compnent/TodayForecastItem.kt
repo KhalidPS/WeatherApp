@@ -8,20 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.toColor
-import coil3.Image
 import com.k.sekiro.weatherapp.R
-import com.k.sekiro.weatherapp.domain.WeatherData
-import java.time.LocalDateTime
+import com.k.sekiro.weatherapp.domain.weather.WeatherData
 import java.time.format.DateTimeFormatter
 
 @SuppressLint("ResourceType")

@@ -1,4 +1,4 @@
-package com.k.sekiro.weatherapp.domain
+package com.k.sekiro.weatherapp.domain.weather
 
 import java.time.LocalDateTime
 

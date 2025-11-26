@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.k.sekiro.weatherapp.domain.TempData
+import com.k.sekiro.weatherapp.domain.weather.TempData
 import com.k.sekiro.weatherapp.ui.theme.Purple80
 
 

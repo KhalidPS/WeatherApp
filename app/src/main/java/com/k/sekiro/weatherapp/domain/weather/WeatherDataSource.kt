@@ -1,10 +1,7 @@
-package com.k.sekiro.weatherapp.domain
+package com.k.sekiro.weatherapp.domain.weather
 
-import com.k.sekiro.weatherapp.data.remote.WeatherDto
-import com.k.sekiro.weatherapp.domain.location.PlaceSuggestion
 import com.k.sekiro.weatherapp.domain.util.NetworkError
 import com.k.sekiro.weatherapp.domain.util.Result
-import kotlinx.coroutines.Deferred
 
 interface WeatherDataSource {
     suspend fun getWeatherData(
@@ -15,7 +12,5 @@ interface WeatherDataSource {
     fun getLocationCity(
         latitude: Double, longitude: Double, onSuccess: (city: String, country: String) -> Unit,
     )
-
-    suspend fun getPlaceSuggestion(query: String): Result<PlaceSuggestion, NetworkError>
 
 }
