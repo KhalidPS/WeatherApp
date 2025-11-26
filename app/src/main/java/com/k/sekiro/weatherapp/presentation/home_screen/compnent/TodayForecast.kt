@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.k.sekiro.weatherapp.domain.WeatherInfo
+import com.k.sekiro.weatherapp.domain.weather.WeatherInfo
 
 @Composable
 fun TodayForecast(

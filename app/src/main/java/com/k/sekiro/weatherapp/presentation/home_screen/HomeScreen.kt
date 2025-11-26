@@ -31,9 +31,8 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import com.k.sekiro.weatherapp.BuildConfig
 import com.k.sekiro.weatherapp.R
-import com.k.sekiro.weatherapp.domain.WeatherData
-import com.k.sekiro.weatherapp.domain.WeatherInfo
-import com.k.sekiro.weatherapp.presentation.home_screen.compnent.HomeSearchBar
+import com.k.sekiro.weatherapp.domain.weather.WeatherData
+import com.k.sekiro.weatherapp.domain.weather.WeatherInfo
 import com.k.sekiro.weatherapp.presentation.home_screen.compnent.TemperatureCard
 import com.k.sekiro.weatherapp.presentation.home_screen.compnent.TodayForecast
 import com.k.sekiro.weatherapp.presentation.home_screen.compnent.WeatherItem

@@ -12,10 +12,9 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.k.sekiro.weatherapp.domain.TempData
+import com.k.sekiro.weatherapp.domain.weather.TempData
 import com.k.sekiro.weatherapp.ui.theme.Purple80
 import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
 
 // 1. Define the Data
 
