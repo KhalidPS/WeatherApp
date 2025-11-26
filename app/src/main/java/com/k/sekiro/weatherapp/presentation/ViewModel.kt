@@ -8,7 +8,10 @@ import com.k.sekiro.weatherapp.domain.location.LocationTracker
 import com.k.sekiro.weatherapp.domain.util.onError
 import com.k.sekiro.weatherapp.domain.util.onSuccess
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -24,6 +27,7 @@ class ViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UIState())
+    private var  job: Job? = null
     val state = _state
         .onStart {
             getWeatherInfo()
@@ -120,9 +124,28 @@ class ViewModel(
                         }
 
                         _event.send(UiEvent.ShowToast(error.name))
+                        getWeatherInfo()
                     }
             }
         }
+    }
+
+    fun getPlacesSuggestions(query: String) {
+        job?.cancel()
+        viewModelScope.launch {
+            if (job != null) delay(500)
+            job = launch(Dispatchers.IO) {
+                weatherDataSource.getPlaceSuggestion(query)
+                    .onSuccess { places ->
+                        Log.e("ks",places.features.toString())
+                        _state.update {
+                            it.copy(
+                                suggestionPlaces = places.features)
+                        }
+                    }
+            }
+        }
+
     }
 }
 

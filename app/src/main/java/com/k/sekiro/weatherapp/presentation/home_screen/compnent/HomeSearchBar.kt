@@ -29,17 +29,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.k.sekiro.weatherapp.domain.location.Place
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeSearchBar(
-    places: List<String> = emptyList(),
-    onPlaceClicked:(String) -> Unit,
+    places: List<Place> = emptyList(),
+    onPlaceClicked:(Double,Double,String) -> Unit,
+    onQueryChange:(String) -> Unit = {}
 ) {
     var value by remember { mutableStateOf("") }
     val isExpanded by remember { derivedStateOf { value.isNotEmpty() && value.isNotEmpty() } }
-    val filteredPlaces by remember { derivedStateOf { places.filter { place -> place.lowercase().contains(value.lowercase()) } } }
+
 
 
     SearchBar(
@@ -49,6 +51,7 @@ fun HomeSearchBar(
                 value = value,
                 onValueChange = {
                     value = it
+                    onQueryChange(it)
                 },
                 leadingIcon = {
                     Icon(
@@ -73,11 +76,12 @@ fun HomeSearchBar(
         }
     ) {
         LazyColumn {
-            items(filteredPlaces) { place ->
+            items(places) { place ->
                 Row (
                    modifier =  Modifier
                        .clickable(onClick = {
-                           onPlaceClicked(place)
+                           val prop = place.properties
+                           onPlaceClicked(prop.lat!!,prop.lon!!,prop.city!!)
                            value = ""
                        })
                        .fillMaxWidth()
@@ -88,7 +92,7 @@ fun HomeSearchBar(
 
                 ){
                     Text(
-                        text = place
+                        text = place.properties.let { "${it.country},${it.city}" }
                     )
                 }
             }

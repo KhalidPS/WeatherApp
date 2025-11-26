@@ -52,6 +52,8 @@ class MainActivity : ComponentActivity() {
                         Log.e("ks","state: $state")
                         val weatherInfo = state.value.weatherInfo
                         val currentWeather = weatherInfo?.currentWeatherData
+                        val suggestedPlaces = state.value.suggestionPlaces
+
 
 
                         Column(
@@ -74,7 +76,9 @@ class MainActivity : ComponentActivity() {
                                     cityName = state.value.cityName,
                                     onPlaceClicked = { lat , long , name->
                                         viewModel.getWeatherByPlace(lat,long,name)
-                                    }
+                                    },
+                                    onQueryChange = viewModel::getPlacesSuggestions,
+                                    places = suggestedPlaces
                                 )
                             }
 

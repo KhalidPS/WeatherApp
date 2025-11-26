@@ -33,6 +33,7 @@ import com.k.sekiro.weatherapp.BuildConfig
 import com.k.sekiro.weatherapp.R
 import com.k.sekiro.weatherapp.domain.WeatherData
 import com.k.sekiro.weatherapp.domain.WeatherInfo
+import com.k.sekiro.weatherapp.domain.location.Place
 import com.k.sekiro.weatherapp.presentation.home_screen.compnent.HomeSearchBar
 import com.k.sekiro.weatherapp.presentation.home_screen.compnent.TemperatureCard
 import com.k.sekiro.weatherapp.presentation.home_screen.compnent.TodayForecast
@@ -50,8 +51,10 @@ fun HomeScreen(
     weatherInfo: WeatherInfo,
     currentWeather: WeatherData,
     cityName: String,
+    places: List<Place>,
     countryName: String,
     onPlaceClicked:(Double, Double, String) -> Unit = { _, _,_ ->},
+    onQueryChange:(String) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -86,13 +89,12 @@ fun HomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                   /* HomeSearchBar(
-                        places = listOf("sunny","snowy","rainy","thunder"),
-                        onPlaceClicked = {
-                            onPlaceClicked(it)
-                        }
-                    )*/
-                    AutocompleteSearch(
+                    HomeSearchBar(
+                        places = places,
+                        onPlaceClicked = onPlaceClicked,
+                        onQueryChange = onQueryChange
+                    )
+/*                    AutocompleteSearch(
                         apiKey = BuildConfig.STADIA_API_KEY,
                         onFeatureClicked = { featurePropertiesV2 ->
                              val coordinates = featurePropertiesV2.geometry?.coordinates
@@ -106,7 +108,7 @@ fun HomeScreen(
                                     onPlaceClicked(lat,long,name)
                                 }
                         }
-                    )
+                    )*/
 
                     Spacer(Modifier.height(12.dp))
 
