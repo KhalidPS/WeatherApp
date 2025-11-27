@@ -42,7 +42,7 @@ fun TemperatureCard(
                 fontWeight = FontWeight.Bold
             )
 
-            SmoothPathChart(
+            TemperaturePathChart(
                 color = Purple80,
                 data = data
             )

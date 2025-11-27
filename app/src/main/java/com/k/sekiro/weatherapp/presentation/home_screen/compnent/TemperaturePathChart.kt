@@ -27,7 +27,7 @@ val temperatureData = listOf(
 
 @OptIn(ExperimentalContracts::class)
 @Composable
-fun SmoothPathChart(
+fun TemperaturePathChart(
     color: Color = Purple80,
     data: List<TempData?> = temperatureData) {
 
@@ -43,52 +43,44 @@ fun SmoothPathChart(
         val width = size.width
         val height = size.height
 
-        // Scaling function for Y-axis (temperature to canvas height)
         val yCoords = data.map { item ->
             val normalizedY = (item!!.temp - minTemp) / (maxTemp - minTemp).toFloat()
-            // Invert Y-axis since (0,0) is top-left
+
             height * (1f - normalizedY)
         }
 
-        // Scaling function for X-axis (time slots to canvas width)
         val stepX = width / (data.size - 1).toFloat()
         val xCoords = data.indices.map { it * stepX }
 
-        // 2. Map Data to Offsets
         val points = xCoords.zip(yCoords).map { (x, y) -> Offset(x, y) }
 
-        // 3. Create a Smooth Path using cubicTo
         val path = Path()
         if (points.isNotEmpty()) {
             path.moveTo(points.first().x, points.first().y)
 
-            // Calculate control points for a Catmull-Rom like smooth curve
             for (i in 1 until points.size) {
                 val p1 = points[i - 1]
                 val p2 = points[i]
 
-                // Simple control points approximation
                 val controlX1 = p1.x + (p2.x - p1.x) * 0.5f
                 val controlY1 = p1.y
                 val controlX2 = p2.x - (p2.x - p1.x) * 0.5f
                 val controlY2 = p2.y
 
                 path.cubicTo(
-                    x1 = controlX1, y1 = controlY1, // Control point 1 (Simple approximation)
-                    x2 = controlX2, y2 = controlY2, // Control point 2
-                    x3 = p2.x, y3 = p2.y // End point
+                    x1 = controlX1, y1 = controlY1,
+                    x2 = controlX2, y2 = controlY2,
+                    x3 = p2.x, y3 = p2.y
                 )
             }
         }
 
-        // 4. Draw the Path
         drawPath(
             path = path,
             color = color, // Light Blue color
             style = Stroke(width = 4.dp.toPx(), cap = StrokeCap.Round)
         )
 
-        // 5. Draw Points (Dots)
         points.forEachIndexed { index,offset ->
             drawCircle(
                 color = Color.White,
@@ -101,21 +93,14 @@ fun SmoothPathChart(
 
                 style = Stroke(width = 2.dp.toPx())
             )
-/*            drawCircle(
-                color = Color(0xFF64B5F6), // Fill the circle with the path color
-                radius = 3.dp.toPx(),
-                center = offset
-            )*/
+
         }
 
-        // *To complete the chart, you would use drawContext.canvas.nativeCanvas.drawText
-        //  for the labels (Morning, 26°, etc.) as Compose's native 'drawText'
-        //  is more complex for simple Canvas use.*
     }
 }
 
 @Preview
 @Composable
 private fun SmoothPathChartPrev() {
-    SmoothPathChart()
+    TemperaturePathChart()
 }
